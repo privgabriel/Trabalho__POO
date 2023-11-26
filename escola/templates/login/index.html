@@ -1,10 +1,26 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" href="{% static 'login/style.css' %}" />
+
+    <title>Login</title>
 </head>
 <body>
-$END$
+    <img src="{% static 'login/img/login.png' %}" alt="login" class="login_img">
+
+    <h1 class="h1_css">Boas-vindas</h1>
+    <form class="login-container" method="post" action="{% url 'login' %}">
+        {% csrf_token %}
+        <input placeholder="Usuário" class="username_css" type="text" id="username" name="username" required><br>
+
+        <input placeholder="Senha" class="password_css" type="password" id="password" name="password" required><br>
+
+        <input type="submit" value="Login">
+    </form>
+
 </body>
-</html>
