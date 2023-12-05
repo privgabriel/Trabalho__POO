@@ -14,6 +14,8 @@
     <img src="{% static 'login/img/login.png' %}" alt="login" class="login_img">
 
     <h1 class="h1_css">Boas-vindas</h1>
+
+
     <form class="login-container" method="post" action="{% url 'login' %}">
         {% csrf_token %}
         <input placeholder="Usuário" class="username_css" type="text" id="username" name="username" required><br>
@@ -21,6 +23,9 @@
         <input placeholder="Senha" class="password_css" type="password" id="password" name="password" required><br>
 
         <input type="submit" value="Login">
+        {% if error_message %}
+        <p class="error_css">{{ error_message }}</p>
+    {% endif %}
     </form>
 
 </body>

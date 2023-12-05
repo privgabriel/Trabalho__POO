@@ -1,6 +1,11 @@
 from rest_framework import serializers
-from escola.models import Aluno, Curso, Matricula
+from escola.models import Aluno, Curso, Matricula, Usuario
 
+
+class UsuariosSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Usuario
+        fields = ['id', 'username', 'password']
 
 class AlunoSerializer(serializers.ModelSerializer):
     class Meta:
@@ -35,3 +40,11 @@ class ListaAlunosMatriculadosSerializer(serializers.ModelSerializer):
     class Meta:
         model = Matricula
         fields = ['aluno_nome']
+
+
+class ListaUsuariosSerializer(serializers.ModelSerializer):
+    usuario_nome = serializers.ReadOnlyField(source= 'usuario.username')
+
+    class Meta:
+        model = Usuario
+        fields = ['usuario_nome']

@@ -1,6 +1,6 @@
 from rest_framework import viewsets, generics
-from escola.models import Aluno, Curso, Matricula
-from escola.serializer import AlunoSerializer, CursoSerializer, MatriculaSerializer, ListaMatriculasAlunoSerializer, ListaAlunosMatriculadosSerializer
+from escola.models import Aluno, Curso, Matricula, Usuario
+from escola.serializer import AlunoSerializer, CursoSerializer, MatriculaSerializer, ListaMatriculasAlunoSerializer, ListaAlunosMatriculadosSerializer, UsuariosSerializer, ListaUsuariosSerializer
 from rest_framework.authentication import BasicAuthentication
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth import authenticate, login
@@ -21,18 +21,49 @@ class LoginPage(View):
 
         user = authenticate(request, username=username, password=password)
 
-        if user is not None:
-            login(request, user)
+        if username == '' or password == '':
+            return render(request, self.template_name, {'error_message': 'Aguardando preenchimento dos campos'})
 
-            return redirect('/admin/')  # Substitua 'pagina_inicial' pela sua URL desejada
+        if username == 'admin' and password == 'admin':
+            return redirect('/admin/')
         else:
-            return render(request, self.template_name, {'error_message': 'Aguardando informações'})
+            return render(request, self.template_name, {'error_message': 'Usuário ou senha inválidos'})
+
+class CreateAccount(View):
+    template_name = 'createAccount/index.html'
+
+    def get(self, request):
+        return render(request, self.template_name)
+
+    def create_user_login(self, request):
+        Usuarios.username = request.POST.get('username')
+        Usuarios.password = request.POST.get('password')
+
+        if Usuarios.username == '' or Usuarios.password == '':
+            return render(request, self.template_name, {'error_message': 'Por favor, preencha todos os campos'})
+
+        if Usuarios.username == Usuarios.password:
+            return render(request, self.template_name, {'error_message': 'Usuário não pode ser igual à senha'})
+
+        if Usuarios.objects.filter(username=Usuarios.username).exists():
+            return render(request, self.template_name, {'error_message': 'Usuário já cadastrado'})
+
+    def post(self, request):
+        return self.create_user_login(request)
+
 
 
 class AlunosViewSet(viewsets.ModelViewSet):
     """Exibindo todos os alunos e alunas"""
     queryset = Aluno.objects.all()
     serializer_class = AlunoSerializer
+    authentication_classes = [BasicAuthentication]
+    permission_classes = [IsAuthenticated]
+
+class UsuariosViewSet(viewsets.ModelViewSet):
+    """Exibindo todos os alunos e alunas"""
+    queryset = Usuario.objects.all()
+    serializer_class = UsuariosSerializer
     authentication_classes = [BasicAuthentication]
     permission_classes = [IsAuthenticated]
 
@@ -68,3 +99,11 @@ class ListaAlunosMatriculados(generics.ListAPIView):
     serializer_class = ListaAlunosMatriculadosSerializer
     authentication_classes = [BasicAuthentication]
     permission_classes = [IsAuthenticated]
+
+
+class ListaUsuarios(generics.ListAPIView):
+
+    def get_queryset(self):
+        queryset = Usuarios.objects.filter(usuario_id= self.kwargs['pk'])
+        return queryset
+    serializer_class = ListaUsuariosSerializer

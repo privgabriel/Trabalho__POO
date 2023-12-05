@@ -1,10 +1,30 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" href="{% static 'login/style.css' %}" />
+
+    <title>Registro</title>
 </head>
 <body>
-$END$
+    <img src="{% static 'login/img/register.png' %}" alt="register" class="register_img">
+    <h1 class="h1_css">Registrar</h1>
+
+    <form class="register-container" method="post" action="{% url 'create_account' %}">
+        {% csrf_token %}
+        <input placeholder="Usuário" class="username_css" type="text" id="username" name="username" required><br>
+        <input placeholder="Senha" class="password_css" type="password" id="password" name="password" required><br>
+
+        <input type="submit" value="Registrar">
+        <a href="{% url 'login' %}">Voltar para o Login</a>
+
+        {% if error_message %}
+            <p class="error_css">{{ error_message }}</p>
+        {% endif %}
+    </form>
 </body>
 </html>

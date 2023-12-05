@@ -1,6 +1,14 @@
 from django.contrib import admin
-from escola.models import  Aluno, Curso, Matricula
+from escola.models import  Aluno, Curso, Matricula, Usuario
 
+
+class Usuarios(admin.ModelAdmin):
+    list_display = ('id', 'username',)
+    list_display_links = ('id', 'username')
+    search_fields = ('username',)
+    list_per_page = 20
+
+admin.site.register(Usuario, Usuarios)
 class Alunos(admin.ModelAdmin):
     list_display = ('id', 'nome', 'rg', 'cpf', 'data_nascimento')
     list_display_links = ('id', 'nome')

@@ -1,5 +1,11 @@
 from django.db import models
 
+class Usuario(models.Model):
+    username = models.CharField(max_length=10)
+    password = models.CharField(max_length=10)
+
+    def __str__(self):
+        return self.username
 class Aluno(models.Model):
     nome = models.CharField(max_length=30)
     rg = models.CharField(max_length=9)
