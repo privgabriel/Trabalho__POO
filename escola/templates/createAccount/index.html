@@ -11,20 +11,21 @@
     <title>Registro</title>
 </head>
 <body>
-    <img src="{% static 'login/img/register.png' %}" alt="register" class="register_img">
-    <h1 class="h1_css">Registrar</h1>
+    <img src="{% static 'login/img/login.png' %}" alt="login" class="login_img">
 
-    <form class="register-container" method="post" action="{% url 'create_account' %}">
+    <h1 class="h1_css">Boas-vindas</h1>
+
+
+    <form class="login-container" method="post" action="{% url 'create_account' %}">
         {% csrf_token %}
         <input placeholder="Usuário" class="username_css" type="text" id="username" name="username" required><br>
+
         <input placeholder="Senha" class="password_css" type="password" id="password" name="password" required><br>
 
-        <input type="submit" value="Registrar">
-        <a href="{% url 'login' %}">Voltar para o Login</a>
-
+        <input type="submit" value="Registro">
         {% if error_message %}
-            <p class="error_css">{{ error_message }}</p>
-        {% endif %}
+        <p class="error_css">{{ error_message }}</p>
+    {% endif %}
     </form>
+
 </body>
-</html>
