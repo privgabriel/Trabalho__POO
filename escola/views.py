@@ -7,8 +7,14 @@ from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
 from django.views import View
 from django.contrib.auth.models import User
+from django.shortcuts import render
+from django.views import View
+from django.contrib.auth.models import User
 
 
+from django.shortcuts import render, redirect
+from django.views import View
+from django.contrib.auth import authenticate, login
 
 class LoginPage(View):
     template_name = 'login/index.html'
@@ -20,13 +26,19 @@ class LoginPage(View):
         username = request.POST.get('username')
         password = request.POST.get('password')
 
-        user = authenticate(request, username=username, password=password)
-
         if username == '' or password == '':
             return render(request, self.template_name, {'error_message': 'Aguardando preenchimento dos campos'})
 
-        if username == 'admin' and password == 'admin':
-            return redirect('/admin/')
+        # Verificar directamente en el modelo User
+        try:
+            user = User.objects.get(username=username)
+        except User.DoesNotExist:
+            user = None
+
+        if user is not None and user.check_password(password):
+            # Usuario autenticado correctamente
+            login(request, user)
+            return redirect('/admin/')  # Puedes redirigir a la página principal o a donde desees
         else:
             return render(request, self.template_name, {'error_message': 'Usuário ou senha inválidos'})
 
@@ -36,21 +48,25 @@ class CreateAccount(View):
     def get(self, request):
         return render(request, self.template_name)
 
-    def create_user_login(self, request):
-        Usuarios.username = request.POST.get('username')
-        Usuarios.password = request.POST.get('password')
+    def create_user(self, request):
+        username = request.POST.get('username')
+        password = request.POST.get('password')
 
-        if Usuarios.username == '' or Usuarios.password == '':
+        if not username or not password:
             return render(request, self.template_name, {'error_message': 'Por favor, preencha todos os campos'})
 
-        if Usuarios.username == Usuarios.password:
-            return render(request, self.template_name, {'error_message': 'Usuário não pode ser igual à senha'})
+        if User.objects.filter(username=username).exists():
+            return render(request, self.template_name, {'error_message': 'Nome de usuário já em uso'})
 
-        if Usuarios.objects.filter(username=Usuarios.username).exists():
-            return render(request, self.template_name, {'error_message': 'Usuário já cadastrado'})
+        user = User.objects.create_user(username=username, password=password)
+        # Puedes hacer más cosas con el usuario creado, como iniciar sesión automáticamente.
+
+        return redirect('/')  # O redirige a la página que desees después de crear la cuenta
 
     def post(self, request):
-        return self.create_user_login(request)
+        return self.create_user(request)
+
+
 
 
 
