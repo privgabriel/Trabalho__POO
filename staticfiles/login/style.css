@@ -1,0 +1,54 @@
+* body {
+    background: white;
+}
+.login_img {
+    display: block;
+    margin: auto;
+    width: 25%;
+    height: 25%;
+}
+.h1_css {
+    font-family: 'Open Sans', sans-serif;
+    color: #0181d4;
+    display:block;
+    text-align: center;
+}
+.login-container {
+    display: flex;
+    flex-direction: column; /* Organiza os elementos em coluna por padrão */
+    align-items: center; /* Centraliza os elementos verticalmente */
+}
+
+.login-label {
+    margin-bottom: 5px; /* Adiciona espaço entre os rótulos e os inputs */
+}
+
+.username_css,
+.password_css {
+    width: 50%;
+    padding: 10px;
+    margin-bottom: 10px; /* Adiciona espaço entre os inputs */
+}
+
+.password_css {
+    margin-bottom: 20px; /* Ajusta o espaço entre a senha e o botão de envio */
+}
+
+input[type="submit"] {
+    width: 50%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s; /* Adiciona uma transição suave para a mudança de cor */
+
+    /* Cor normal */
+    background-color: #f0f0f0;
+}
+
+/* Quando o mouse está sobre o botão, altera a cor de fundo para azul */
+input[type="submit"]:hover {
+    background-color: #3498db;
+    color: #fff; /* Altera a cor do texto para branco ao passar o mouse */
+}
+
