@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path, include
-from escola.views import AlunosViewSet, CursosViewSet, MatriculasViewSet, ListaMatriculasAluno, ListaAlunosMatriculados, LoginPage, CreateAccount, UsuariosViewSet, ListaUsuariosSerializer
+from escola.views import AlunosViewSet, CursosViewSet, MatriculasViewSet, ListaMatriculasAluno, ListaAlunosMatriculados, LoginPage, CreateAccount, UsuariosViewSet, ListaUsuariosSerializer, ProfessorViewSet
 from rest_framework import routers
 from django.views.generic import RedirectView
 
@@ -9,6 +9,7 @@ router.register('alunos', AlunosViewSet, basename='Alunos')
 router.register('cursos', CursosViewSet, basename='Cursos')
 router.register('matriculas', MatriculasViewSet, basename='Matriculas')
 router.register('usuarios', UsuariosViewSet, basename='Usuarios')
+router.register('professores', ProfessorViewSet, basename='Professores')
 
 
 
@@ -20,4 +21,5 @@ urlpatterns = [
     path('aluno/<int:pk>/matriculas/', ListaMatriculasAluno.as_view()),
     path('curso/<int:pk>/matriculas/', ListaAlunosMatriculados.as_view()),
     path('usuario/<int:pk>/usuarios/', ListaUsuariosSerializer),
+    path('professor/<int:pk>/professores/', ListaUsuariosSerializer),
 ]

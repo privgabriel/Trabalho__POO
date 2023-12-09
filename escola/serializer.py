@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from escola.models import Aluno, Curso, Matricula, Usuario
+from escola.models import Aluno, Curso, Matricula, Usuario, Professor
 from django.contrib.auth.models import User
 
 
@@ -11,6 +11,11 @@ class UsuariosSerializer(serializers.ModelSerializer):
 class AlunoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Aluno
+        fields = ['id', 'nome', 'rg', 'cpf', 'data_nascimento']
+
+class ProfessorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Professor
         fields = ['id', 'nome', 'rg', 'cpf', 'data_nascimento']
 
 
@@ -41,6 +46,13 @@ class ListaAlunosMatriculadosSerializer(serializers.ModelSerializer):
     class Meta:
         model = Matricula
         fields = ['aluno_nome']
+
+class ListaProfessoresSerializer(serializers.ModelSerializer):
+    professor_nome = serializers.ReadOnlyField(source='professor.nome')
+
+    class Meta:
+        model = Professor
+        fields = ['professor_nome']
 
 
 class ListaUsuariosSerializer(serializers.ModelSerializer):

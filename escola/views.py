@@ -1,6 +1,6 @@
 from rest_framework import viewsets, generics
-from escola.models import Aluno, Curso, Matricula, Usuario
-from escola.serializer import AlunoSerializer, CursoSerializer, MatriculaSerializer, ListaMatriculasAlunoSerializer, ListaAlunosMatriculadosSerializer, UsuariosSerializer, ListaUsuariosSerializer
+from escola.models import Aluno, Curso, Matricula, Usuario, Professor
+from escola.serializer import AlunoSerializer, CursoSerializer, MatriculaSerializer, ListaMatriculasAlunoSerializer, ListaAlunosMatriculadosSerializer, UsuariosSerializer, ListaUsuariosSerializer, ProfessorSerializer, ListaProfessoresSerializer
 from rest_framework.authentication import BasicAuthentication
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth import authenticate, login
@@ -69,6 +69,12 @@ class CreateAccount(View):
 
 
 
+class ProfessorViewSet(viewsets.ModelViewSet):
+    """Exibindo todos os professores e professoras"""
+    queryset = Professor.objects.all()
+    serializer_class = ProfessorSerializer
+    authentication_classes = [BasicAuthentication]
+    permission_classes = [IsAuthenticated]
 
 class AlunosViewSet(viewsets.ModelViewSet):
     """Exibindo todos os alunos e alunas"""
@@ -114,6 +120,16 @@ class ListaAlunosMatriculados(generics.ListAPIView):
         queryset = Matricula.objects.filter(curso_id= self.kwargs['pk'])
         return queryset
     serializer_class = ListaAlunosMatriculadosSerializer
+    authentication_classes = [BasicAuthentication]
+    permission_classes = [IsAuthenticated]
+
+
+class ListaProfessores(generics.ListAPIView):
+    """Listando alunos e alunas matriculados em um curso"""
+    def get_queryset(self):
+        queryset = Professor.objects.filter(id= self.kwargs['pk'])
+        return queryset
+    serializer_class = ListaProfessoresSerializer
     authentication_classes = [BasicAuthentication]
     permission_classes = [IsAuthenticated]
 

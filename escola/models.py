@@ -8,6 +8,17 @@ class Usuario(models.Model):
 
     def __str__(self):
         return self.username
+
+
+class Professor(models.Model):
+    nome = models.CharField(max_length=30)
+    rg = models.CharField(max_length=9)
+    cpf = models.CharField(max_length=11)
+    data_nascimento = models.DateField()
+
+
+    def __str__(self):
+        return self.nome
 class Aluno(models.Model):
     nome = models.CharField(max_length=30)
     rg = models.CharField(max_length=9)
@@ -18,6 +29,7 @@ class Aluno(models.Model):
         return self.nome
 
 class Curso(models.Model):
+    professor = models.ForeignKey(Professor, on_delete= models.CASCADE)
     NIVEL = (
         ('B', 'Básico'),
         ('I', 'Intermediário'),
