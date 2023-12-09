@@ -1,10 +1,11 @@
 from rest_framework import serializers
 from escola.models import Aluno, Curso, Matricula, Usuario
+from django.contrib.auth.models import User
 
 
 class UsuariosSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Usuario
+        model = User
         fields = ['id', 'username', 'password']
 
 class AlunoSerializer(serializers.ModelSerializer):

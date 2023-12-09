@@ -6,6 +6,7 @@ from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
 from django.views import View
+from django.contrib.auth.models import User
 
 
 
@@ -62,7 +63,7 @@ class AlunosViewSet(viewsets.ModelViewSet):
 
 class UsuariosViewSet(viewsets.ModelViewSet):
     """Exibindo todos os alunos e alunas"""
-    queryset = Usuario.objects.all()
+    queryset = User.objects.all()
     serializer_class = UsuariosSerializer
     authentication_classes = [BasicAuthentication]
     permission_classes = [IsAuthenticated]
@@ -104,6 +105,6 @@ class ListaAlunosMatriculados(generics.ListAPIView):
 class ListaUsuarios(generics.ListAPIView):
 
     def get_queryset(self):
-        queryset = Usuarios.objects.filter(usuario_id= self.kwargs['pk'])
+        queryset = User.objects.filter(usuario_id= self.kwargs['pk'])
         return queryset
     serializer_class = ListaUsuariosSerializer
